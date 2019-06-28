@@ -38,10 +38,43 @@ function writeToyToDatabase(name, image) {
         });
 };
 
+function updateLikes(id, likes, count) {
+    let updateData = {
+        likes: count
+    };
+
+    let configObject = {
+        method: "PATCH",
+        headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json"
+        },
+        body: JSON.stringify(updateData)
+    };
+
+    fetch(`http://localhost:3000/toys/${id}`, configObject)
+        .then(response => response.json())
+        .then(toy => {
+            window.alert(`${toy.name} now has ${toy.likes} like(s).`)
+            likes.innerText = toy.likes;
+        })
+        .catch(error => {
+            window.alert(error.message);
+        });
+};
+
 function toySubmitHandler() {
     let toyName = toyForm[0].value;
     let toyImage = toyForm[1].value;
     writeToyToDatabase(toyName, toyImage);
+};
+
+function likeHandler(event) {
+    let toy = event.target.parentElement;
+    let id = toy.id.split("-")[1];
+    let likes = toy.children[2];
+    let likesCount = Number.parseInt(likes.innerText) + 1
+    updateLikes(id, likes, likesCount);
 };
 
 function renderToys(toys) {
@@ -81,17 +114,11 @@ function makeToyCard(toy) {
     let toyLikeButton = document.createElement("button");
     toyLikeButton.innerText = "Like <3";
     toyLikeButton.classList.add("like-btn");
+    toyLikeButton.addEventListener("click", likeHandler);
     toyCard.appendChild(toyLikeButton);
 
     //append card
     toyCollection.appendChild(toyCard);
-};
-
-function clearToys() {
-    let toyCollection = document.querySelector("#toy-collection")
-    while (toyCollection.firstChild) {
-        toyCollection.removeChild(toyCollection.firstChild);
-    };
 };
 
 document.addEventListener("DOMContentLoaded", () => {
