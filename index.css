@@ -38,6 +38,10 @@ body {
   width: auto;
 }
 
+button, .submit {
+  cursor: pointer;
+}
+
 button {
   position: relative;
   background-color: #e04b52;
