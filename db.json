@@ -4,13 +4,13 @@
       "id": 1,
       "name": "Woody",
       "image": "http://www.pngmart.com/files/3/Toy-Story-Woody-PNG-Photos.png",
-      "likes": 5
+      "likes": 7
     },
     {
       "id": 2,
       "name": "Buzz Lightyear",
       "image": "http://www.pngmart.com/files/6/Buzz-Lightyear-PNG-Transparent-Picture.png",
-      "likes": 8
+      "likes": 10
     },
     {
       "id": 3,
@@ -22,7 +22,7 @@
       "id": 4,
       "name": "Slinky Dog",
       "image": "https://www.freeiconspng.com/uploads/slinky-png-transparent-1.png",
-      "likes": 4
+      "likes": 9
     },
     {
       "id": 5,
@@ -46,7 +46,19 @@
       "id": 8,
       "name": "Little Green Men",
       "image": "http://www.pngmart.com/files/3/Toy-Story-Alien-PNG-File.png",
-      "likes": -2
+      "likes": 20
+    },
+    {
+      "name": "Megatron",
+      "image": "https://www.google.com/url?sa=i&source=images&cd=&ved=2ahUKEwjjmL6DkozjAhXZW80KHbn5ACwQjRx6BAgBEAU&url=https%3A%2F%2Fen.wikipedia.org%2Fwiki%2FMegatron&psig=AOvVaw2ZC6_sHqopN43NRKYzf6ur&ust=1561810063262603",
+      "likes": 0,
+      "id": 9
+    },
+    {
+      "name": "Megatron",
+      "image": "https://upload.wikimedia.org/wikipedia/en/thumb/7/7f/Megatron.jpg/220px-Megatron.jpg",
+      "likes": 3,
+      "id": 10
     }
   ]
 }
