@@ -1,6 +1,5 @@
 const TOYS_URL = "http://localhost:3000/toys"
 
-const addBtn = document.querySelector('#new-toy-btn')
 const toyForm = document.querySelector('.container')
 let addToy = false
 
@@ -10,15 +9,10 @@ document.addEventListener('DOMContentLoaded', () => {
   addToyListener()
 })
 
-addBtn.addEventListener('click', () => {
+document.querySelector('#new-toy-btn').addEventListener('click', () => {
   // hide & seek with the form
   addToy = !addToy
-  if (addToy) {
-    toyForm.style.display = 'block'
-    // submit listener here
-  } else {
-    toyForm.style.display = 'none'
-  }
+  addToy ? toyForm.style.display = 'block' : toyForm.style.display = 'none'
 })
 
 const fetchToys = () => {
@@ -29,11 +23,35 @@ const fetchToys = () => {
     })
   },
 
+  render = (toy) => {
+    const collection = toyCollection()
+    const toyCard = document.createElement('div')
+    toyCard.classList.add('card')
+    toyCard.dataset.id = toy.id
+    toyCard.innerHTML += `
+      <h2>${toy.name}</h2>
+      <img class="toy-avatar" src="${toy.image}" alt="${toy.name}">
+      <p><span>${toy.likes}</span> Likes</p>
+      <button class="like-btn">Like <3</button>
+    `
+    toyCard.querySelector('.like-btn').addEventListener('click', e => likeToy(e) )
+    collection.appendChild(toyCard)
+  },
+
+  addToyListener = () => {
+    const form = addToyForm()
+    form.addEventListener('submit', () => {
+      event.preventDefault() 
+      const name = form.querySelector('[name="name"]').value
+      const image = form.querySelector('[name="image"]').value
+      postNewToy(name, image)
+      clearForm()
+    })
+  },
+
   postNewToy = (name, image) => {
     const data = {
-      name: name,
-      image: image,
-      likes: 0
+      name, image, likes: 0
     }
     const configObj = {
       method: "POST",
@@ -44,22 +62,22 @@ const fetchToys = () => {
       body: JSON.stringify(data)
     }
     fetch(TOYS_URL, configObj)
-    .then(resp => resp.json())
-    .then(data => {
-      render(data)
-    })
+    .then(resp => resp.json()).then(data => render(data) )
     // Hide new toy form
     toyForm.style.display = 'none'
   },
 
-
   likeToy = (e) => {
     const likedToy = e.target.parentElement
     const id = likedToy.dataset.id
-    const likes = likedToy.querySelector('p')
+    const likes = likedToy.querySelector('p span')
 
+    // Update likes
+    let addLike = parseInt(likes.innerHTML) + 1
+
+    // Change data.likes to addLike
     const data = {
-      likes: parseInt(likes.innerText)
+      likes: addLike
     }
     const configObj = {
       method: "PATCH",
@@ -69,36 +87,13 @@ const fetchToys = () => {
       },
       body: JSON.stringify(data)
     }
+    // Push new likes to database
     fetch(`${TOYS_URL}/${id}`, configObj)
     .then(resp => resp.json())
-    .then(data => {
-      // Update likes in JSON
-      // PROBLEM: Not storing first click
-      data.likes + 1
-    })
-    // Update like son page
-    likes.innerText = data.likes + 1
+
+    // Change displayed likes from database
+    .then(data => likes.innerHTML = data.likes )
   },
-
-
-  render = (toy) => {
-    const numToys = document.querySelector('#toy-collection').childElementCount
-    const toyId = numToys + 1
-    const toyCard = document.createElement('div')
-    toyCard.classList.add('card')
-    toyCard.dataset.id = toyId
-    toyCard.innerHTML += `
-      <h2>${toy.name}</h2>
-      <img class="toy-avatar" src="${toy.image}" alt="${toy.name}">
-      <p>${toy.likes}</p>
-      <button class="like-btn">Like <3</button>
-    `
-    toyCard.querySelector('.like-btn').addEventListener('click', (e) => {
-      likeToy(e)
-    })
-    toyCollection().appendChild(toyCard)
-  },
-
 
   toyCollection = () => {
     return document.querySelector('#toy-collection')
@@ -107,20 +102,7 @@ const fetchToys = () => {
   addToyForm = () => {
     return document.querySelector('.add-toy-form')
   },
-
-  addToyListener = () => {
-    addToyForm().addEventListener('submit', () => {
-      event.preventDefault()
-      const name = addToyForm().children[1].value
-      const image = addToyForm().children[3].value
-      postNewToy(name, image)
-      clearForm()
-    })
-  },
   
   clearForm = () => {
     addToyForm().reset()
   }
-
-
-// OR HERE!
