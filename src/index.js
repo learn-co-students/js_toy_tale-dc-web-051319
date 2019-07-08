@@ -1,14 +1,14 @@
-const addBtn = document.querySelector('#new-toy-btn')
-const toyForm = document.querySelector('.container')
+const addBtn = document.querySelector("#new-toy-btn")
+const toyForm = document.querySelector(".container")
 let addToy = false
 
-addBtn.addEventListener('click', () => {
+addBtn.addEventListener("click", () => {
   addToy = !addToy
   if (addToy) {
-    toyForm.style.display = 'block'
+    toyForm.style.display = "block"
     getForm().addEventListener("submit", addNewToy)
   } else {
-    toyForm.style.display = 'none'
+    toyForm.style.display = "none"
   }
 });
 
